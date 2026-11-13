@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -323,18 +322,25 @@ canvas {
 
 <canvas id="canvas"></canvas>
 
+<!-- BACKGROUND MUSIC -->
+<audio id="backgroundMusic" loop preload="auto">
+    <source
+        src="https://files.catbox.moe/r1nhr7.mp3"
+        type="audio/mpeg"
+    >
+</audio>
+
 <div class="main-title">
     <h1>MY ONLY ONE</h1>
     <p>YOU ARE ALWAYS IN MY HEART</p>
 </div>
 
 <div class="footer">
-    BLUE HEART EXPERIENCE
+    MADE BY XLILNYX OFFICIAL
 </div>
 
 <!-- FIRST POPUP -->
 <div class="overlay" id="overlay">
-
     <div class="popup">
 
         <button class="close-btn" id="closeBtn">×</button>
@@ -348,7 +354,6 @@ canvas {
         </div>
 
         <div class="description">
-
             <p>
                 Sayang, maaf ya akhir-akhir ini aku sering
                 sibuk dengan urusanku sendiri sampai
@@ -367,7 +372,6 @@ canvas {
                 Maaf kalau selama ini aku membuatmu
                 merasa diabaikan.
             </p>
-
         </div>
 
         <div class="divider"></div>
@@ -385,7 +389,6 @@ canvas {
 
 <!-- REPLY POPUP -->
 <div class="overlay hidden" id="replyOverlay">
-
     <div class="reply-popup">
 
         <div class="heart-icon">♥</div>
@@ -573,22 +576,48 @@ const sendWhatsapp = document.getElementById("sendWhatsapp");
 
 const replyMessage = document.getElementById("replyMessage");
 
-// GANTI DENGAN NOMOR WHATSAPP TUJUAN
-// Gunakan format internasional tanpa tanda +
+// WHATSAPP NUMBER
 const whatsappNumber = "62816409758";
 
-// OPEN REPLY MENU
+// MUSIC SETTINGS
+const backgroundMusic = document.getElementById("backgroundMusic");
+
+backgroundMusic.volume = 0.7;
+
+let musicStarted = false;
+
+async function startMusic() {
+    if (!backgroundMusic.paused) {
+        musicStarted = true;
+        return;
+    }
+
+    try {
+        await backgroundMusic.play();
+        musicStarted = true;
+        console.log("Music playing successfully");
+    } catch (error) {
+        console.error("Music playback failed:", error);
+    }
+}
+
+// CLOSE POPUP + PLAY MUSIC
+closeBtn.addEventListener("click", () => {
+    overlay.classList.add("hidden");
+
+    spawnHeartBurst(width / 2, height / 2);
+
+    startMusic();
+});
+
+// OPEN REPLY MENU + PLAY MUSIC
 openBtn.addEventListener("click", () => {
     overlay.classList.add("hidden");
     replyOverlay.classList.remove("hidden");
 
     spawnHeartBurst(width / 2, height / 2);
-});
 
-// CLOSE FIRST POPUP
-closeBtn.addEventListener("click", () => {
-    overlay.classList.add("hidden");
-    spawnHeartBurst(width / 2, height / 2);
+    startMusic();
 });
 
 // BACK TO FIRST POPUP
@@ -596,7 +625,6 @@ backBtn.addEventListener("click", () => {
     replyOverlay.classList.add("hidden");
     overlay.classList.remove("hidden");
 });
-
 
 // SEND TO WHATSAPP
 sendWhatsapp.addEventListener("click", () => {
@@ -608,8 +636,6 @@ sendWhatsapp.addEventListener("click", () => {
         return;
     }
 
-    const whatsappNumber = "62816409758";
-
     const whatsappURL =
         "https://wa.me/" +
         whatsappNumber +
@@ -618,7 +644,6 @@ sendWhatsapp.addEventListener("click", () => {
 
     window.open(whatsappURL, "_blank");
 });
-
 
 // ANIMATION
 function animate() {
